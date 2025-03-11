@@ -14,9 +14,27 @@ public class BallController : MonoBehaviour
     public Transform orientation;
 
     private Vector3 startLocation;
+    public Vector3 StartLocation { get { return startLocation; } set { startLocation = value; } }
+
+    public Vector3 StartLocation2 { get; set; }
+
+    public static BallController Instance;
+
+
 
     private void Awake()
     {
+        //singleton
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+
+
         rb = GetComponent<Rigidbody>();
         rb.maxAngularVelocity = maxAngularVelocity;
 
@@ -41,6 +59,7 @@ public class BallController : MonoBehaviour
             ResetPosition();
         }
     }
+
     public void ResetPosition()
     {
         this.transform.position = startLocation;
@@ -95,6 +114,10 @@ public class BallController : MonoBehaviour
     private bool CheckGrounded()
     {
         return Physics.Raycast(transform.position, Vector3.down, 0.7f);
+    }
+    public void ChangeCheckpoint(Vector3 newLocation)
+    {
+        startLocation = newLocation;
     }
 
 
